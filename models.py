@@ -5,7 +5,7 @@ from database import db
 class Notas(db.Model):
     __tablename__ = "Notas"
     id: Mapped[int] = mapped_column(primary_key=True)
-    titulo: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    titulo: Mapped[str] = mapped_column(String(100), nullable=True)
     nota: Mapped[Text] = mapped_column(Text, nullable=False)
 
 
