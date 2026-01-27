@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import jsonify, request
-from database import db 
+from database import db
 from models import Notas
 
 app = Flask(__name__)
@@ -21,18 +21,32 @@ def ver_nota():
     return jsonify(en_json)
 
 
+@app.route("/delnote/<titulo>", methods=["DELETE"])
+def eliminando_nota(titulo):
+    if titulo is None:
+        return jsonify({"mensja": "no ingresaste el titulo"})
+    nota = Notas.query.filter_by(titulo=titulo).first()
+    if not nota:
+        return jsonify({"mensaje": "la nota no existe"}), 404
+    try:
+        db.session.delete(nota)
+        db.session.commit()
+        return jsonify({"mensaje": "nota eliminada"}), 200
+    except Exception:
+        db.session.rollback()
+        return jsonify({"mensaje": "error db"})
 
 
 
 @app.route('/makenote', methods=["POST"])
 def crear_nota():
     datos = request.get_json() # de esta manera obtenemos los datos pasados en formato json
-    
+
     nueva_nota = Notas( # de esta manera creamos el dato que envuelve todos los datos de para la base
         titulo = datos['titulo'],
         nota = datos['nota']
     )
-    
+
     try:
         db.session.add(nueva_nota) # agregamos a la base
         db.session.commit() # guardamos en la base
@@ -40,7 +54,6 @@ def crear_nota():
     except ValueError:
         db.session.rollback()
         return jsonify({"mensaje": "existe ese titulo"}), 400
-
 
 
 if __name__ == "__main__":
