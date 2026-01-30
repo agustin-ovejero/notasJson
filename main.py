@@ -1,3 +1,4 @@
+from crypt import methods
 from sqlite3.dbapi2 import DatabaseError
 
 from flask import Flask, jsonify, request
@@ -69,6 +70,23 @@ def crear_nota():
     except ValueError:
         db.session.rollback()
         return jsonify({"mensaje": "existe ese titulo"}), 400
+
+@app.route("/updateNote/<int:id>", methods=['POST'])
+def actualizar_nota(id):
+    nota = Notas.query.get(id)
+    if not nota:
+        return jsonify({"mensaje": "no existe la nota"}), 404
+    try:
+        nuevos_dato = request.get_json()
+        # cuando obtenemos una instancia de la bd, para interactuar con los datos hacemos lo siguente:
+            # instancia.tal
+        nota.titulo, nota.nota = nuevos_dato['titulo'], nuevos_dato['nota']
+        db.session.add(nota)
+        db.session.commit()
+        return jsonify({"mensaje": "nota actualizada"})
+    except Exception:
+        db.session.rollback()
+        return jsonify({"mensaje": "error en la db"}), 500
 
 
 if __name__ == "__main__":
