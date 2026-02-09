@@ -1,0 +1,1 @@
+sqlalchemy_database_uri = "sqlite:///notasjson.db"

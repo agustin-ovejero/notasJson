@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Text
-from database import db
+from ..extensions import db
 
 class Notas(db.Model):
     __tablename__ = "Notas"

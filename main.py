@@ -1,10 +1,6 @@
-from crypt import methods
-from sqlite3.dbapi2 import DatabaseError
-
 from flask import Flask, jsonify, request
-
-from database import db
-from models import Notas
+from app.extensions import db
+from app.models.notas import Notas
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///notasjson.db"
