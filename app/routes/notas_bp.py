@@ -27,7 +27,7 @@ def makenotes():
 def seenotes():
     notas = Notas.query.all()
     if not notas:
-        return jsonify({"mensaje": "No hay notas"})
+        return jsonify({"mensaje": "No hay notas"}), 400
     notas_en_json = [{"id": i.id ,"titulo": i.titulo, "nota": i.nota} for i in notas]
     return jsonify(notas_en_json), 200
     
@@ -39,4 +39,9 @@ def seenotesid(note_id):
     return jsonify({"id": note.id, "titulo": note.titulo, "nota": note.nota}), 200
     
     
-    
+@notes.route('/delnote/<title>', methods=['GET'])
+def delnotes(title):
+    note = Notas.query.filter_by(titulo=title).first()
+    if not note:
+        return jsonify({"mensaje": f"no se encontro una nota con el titulo {title}"}), 400
+    try:
