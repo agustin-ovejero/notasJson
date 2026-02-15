@@ -22,4 +22,12 @@ def makenotes():
     finally:
         db.session.rollback()
         return jsonify({"mensaje": "Ocurrio un error inesperado"}), 400
-     
+
+@notes.route('/seenote', methods=['GET'])     
+def seenotes():
+    notas = Notas.query.all()
+    if not notas:
+        return jsonify({"mensaje": "No hay notas"})
+    notas_en_json = [{"id": i.id ,"titulo": i.titulo, "nota": i.nota} for i in notas]
+    return jsonify(notas_en_json)
+    
