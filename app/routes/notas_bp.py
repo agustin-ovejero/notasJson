@@ -31,3 +31,8 @@ def seenotes():
     notas_en_json = [{"id": i.id ,"titulo": i.titulo, "nota": i.nota} for i in notas]
     return jsonify(notas_en_json)
     
+# @notes.route('/seenoteid/<int:id>', methods=['GET'])
+def seenotesid(id):
+    id = request.args.get(id)
+    pass
+    
