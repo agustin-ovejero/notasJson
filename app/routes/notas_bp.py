@@ -29,10 +29,14 @@ def seenotes():
     if not notas:
         return jsonify({"mensaje": "No hay notas"})
     notas_en_json = [{"id": i.id ,"titulo": i.titulo, "nota": i.nota} for i in notas]
-    return jsonify(notas_en_json)
+    return jsonify(notas_en_json), 200
     
-# @notes.route('/seenoteid/<int:id>', methods=['GET'])
-def seenotesid(id):
-    id = request.args.get(id)
-    pass
+@notes.route('/seenoteid/<int:note_id>', methods=['GET'])
+def seenotesid(note_id):
+    note = Notas.query.get(note_id)
+    if not note:
+        return jsonify({"mensaje": "No existe el id de la nota"})
+    return jsonify({"id": note.id, "titulo": note.titulo, "nota": note.nota}), 200
+    
+    
     
