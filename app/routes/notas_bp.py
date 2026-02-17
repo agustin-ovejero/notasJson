@@ -39,9 +39,16 @@ def seenotesid(note_id):
     return jsonify({"id": note.id, "titulo": note.titulo, "nota": note.nota}), 200
     
     
-@notes.route('/delnote/<title>', methods=['GET'])
+@notes.route('/delnote/<title>', methods=['DELETE'])
 def delnotes(title):
     note = Notas.query.filter_by(titulo=title).first()
     if not note:
         return jsonify({"mensaje": f"no se encontro una nota con el titulo {title}"}), 400
     try:
+        db.session.delete(note)
+        db.session.commit()
+        return jsonify({"mensaje": "se ellimino la nota correctamenten"}), 200
+    except Exception:
+        db.session.rollback()
+        return jsonify({"mensaje": "algo salio mal"}), 400 # Esto hay que cambiar
+        
