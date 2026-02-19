@@ -1,9 +1,16 @@
 from flask import Flask
 from .extensions import db
-from config import sqlalchemy_database_uri
+from config import Config
+
+from .routes.index import index
+from .routes.notas_bp import notes
 def create_app():
    app = Flask(__name__) 
-   app.config.from_object(sqlalchemy_database_uri)
+   app.register_blueprint(index)
+   app.register_blueprint(notes)
+   
+   
+   app.config.from_object(Config) # El metodo from_object solamente acepta clases que las va a escanear
    db.init_app(app)
    with app.app_context():
        db.create_all()

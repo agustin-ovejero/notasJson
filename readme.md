@@ -7,7 +7,7 @@
 - **En Windows** `python source nombre_del_entorno/bin/activate`
 - **En Linux** `python3 source nombre_del_entorno/bin/activate`
 3. Instalar las dependecias
-- pip freeze requirements.txt
+- pip install -r requirements.txt
 4. Levantar el proyecto
 - **Nota: Dentro de nada va a cambiar la forma de levantar el proyecto**
 - **En Windows** `python main.py`
