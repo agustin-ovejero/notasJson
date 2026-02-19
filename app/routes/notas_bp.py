@@ -10,7 +10,6 @@ notes = Blueprint('notas', __name__)
 def makenotes():
     datos = request.get_json()
     
-    #nueva_nota = Notas(titulo=datos["titulo"], nota=datos["nota"])
     try:
         nueva_nota = Notas(titulo=datos["titulo"], nota=datos["nota"])
         db.session.add(nueva_nota)
@@ -51,4 +50,19 @@ def delnotes(title):
     except Exception:
         db.session.rollback()
         return jsonify({"mensaje": "algo salio mal"}), 400 # Esto hay que cambiar
+        
+@notes.route('/updatenote/<int:id>', methods=['PUT'])
+def updatenotes(id):
+    note = Notas.query.get(id)
+    if not note:
+        return jsonify({"mensaje": "no existe nota con ese id"}), 404
+    try:
+        nuevos_datos = request.get_json()
+        note.titulo, note.nota = nuevos_datos["titulo"], nuevos_datos["nota"]
+        db.session.add(note)
+        db.session.commit()
+        return jsonify({"mensaje": "Se actualizo la nota correctamente"}), 200
+    except Exception:
+        db.session.rollback()
+        return jsonify({"mensaje": "Algo salio mal"}), 400
         
