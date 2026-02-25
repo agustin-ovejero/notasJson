@@ -18,9 +18,9 @@ def makenotes():
     except KeyError as key:
         db.session.rollback()
         return jsonify({"mensaje": f"Falta agregar los datos para la siguiente clave: {key}"}), 400
-    finally:
-        db.session.rollback()
-        return jsonify({"mensaje": "Ocurrio un error inesperado"}), 400
+    # finally:
+    #     db.session.rollback()
+    #     return jsonify({"mensaje": "Ocurrio un error inesperado"}), 400
 
 @notes.route('/seenote', methods=['GET'])     
 def seenotes():
